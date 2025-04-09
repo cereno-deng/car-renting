@@ -17,6 +17,9 @@ import { plugins } from './plugins'
 import { defaultLexical } from '@/fields/defaultLexical'
 import { getServerSideURL } from './utilities/getURL'
 import { Cars } from './collections/Cars'
+import { Extras } from './collections/Extras'
+import { Orders } from './collections/Orders'
+import { Customers } from './collections/Customers'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -65,7 +68,7 @@ export default buildConfig({
       url: process.env.DATABASE_URI || '',
     },
   }),
-  collections: [Cars, Media, Pages, Posts, Categories, Users],
+  collections: [Cars, Extras, Orders, Customers, Media, Pages, Posts, Categories, Users],
   cors: [getServerSideURL()].filter(Boolean),
   globals: [Header, Footer],
   plugins: [

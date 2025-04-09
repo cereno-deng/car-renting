@@ -68,6 +68,9 @@ export interface Config {
   blocks: {};
   collections: {
     cars: Car;
+    extras: Extra;
+    orders: Order;
+    customers: Customer;
     media: Media;
     pages: Page;
     posts: Post;
@@ -85,6 +88,9 @@ export interface Config {
   collectionsJoins: {};
   collectionsSelect: {
     cars: CarsSelect<false> | CarsSelect<true>;
+    extras: ExtrasSelect<false> | ExtrasSelect<true>;
+    orders: OrdersSelect<false> | OrdersSelect<true>;
+    customers: CustomersSelect<false> | CustomersSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
     pages: PagesSelect<false> | PagesSelect<true>;
     posts: PostsSelect<false> | PostsSelect<true>;
@@ -149,13 +155,25 @@ export interface UserAuthOperations {
  */
 export interface Car {
   id: number;
-  model: string;
-  packageName?: string | null;
-  packageDescription?: string | null;
-  normalPrice: number;
-  holidayPrice: number;
-  image?: (number | null) | Media;
-  available: boolean;
+  name: string;
+  type: 'sedan' | 'suv' | 'truck' | 'luxury' | 'economy' | 'van';
+  description: string;
+  pricePerDay: number;
+  capacity: number;
+  transmission: 'automatic' | 'manual';
+  fuelType: 'gasoline' | 'diesel' | 'hybrid' | 'electric';
+  images: {
+    image: number | Media;
+    alt: string;
+    id?: string | null;
+  }[];
+  features?:
+    | {
+        feature: string;
+        id?: string | null;
+      }[]
+    | null;
+  status: 'available' | 'maintenance' | 'reserved';
   updatedAt: string;
   createdAt: string;
 }
@@ -250,6 +268,65 @@ export interface Media {
       filename?: string | null;
     };
   };
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "extras".
+ */
+export interface Extra {
+  id: number;
+  name: string;
+  description: string;
+  pricePerDay: number;
+  icon?: (number | null) | Media;
+  status: 'active' | 'inactive';
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "orders".
+ */
+export interface Order {
+  id: number;
+  orderNumber: string;
+  customer: number | Customer;
+  car: number | Car;
+  startDate: string;
+  endDate: string;
+  extras?: (number | Extra)[] | null;
+  totalAmount: number;
+  status: 'pending' | 'paid' | 'cancelled' | 'completed';
+  paymentMethod?: ('credit_card' | 'paypal' | 'bank_transfer') | null;
+  paymentTransactionId?: string | null;
+  notes?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "customers".
+ */
+export interface Customer {
+  id: number;
+  firstName: string;
+  lastName: string;
+  email: string;
+  phone?: string | null;
+  address?: {
+    street?: string | null;
+    city?: string | null;
+    state?: string | null;
+    zipCode?: string | null;
+    country?: string | null;
+  };
+  drivingLicense?: {
+    number?: string | null;
+    issueDate?: string | null;
+    expiryDate?: string | null;
+  };
+  updatedAt: string;
+  createdAt: string;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -922,6 +999,18 @@ export interface PayloadLockedDocument {
         value: number | Car;
       } | null)
     | ({
+        relationTo: 'extras';
+        value: number | Extra;
+      } | null)
+    | ({
+        relationTo: 'orders';
+        value: number | Order;
+      } | null)
+    | ({
+        relationTo: 'customers';
+        value: number | Customer;
+      } | null)
+    | ({
         relationTo: 'media';
         value: number | Media;
       } | null)
@@ -1008,13 +1097,87 @@ export interface PayloadMigration {
  * via the `definition` "cars_select".
  */
 export interface CarsSelect<T extends boolean = true> {
-  model?: T;
-  packageName?: T;
-  packageDescription?: T;
-  normalPrice?: T;
-  holidayPrice?: T;
-  image?: T;
-  available?: T;
+  name?: T;
+  type?: T;
+  description?: T;
+  pricePerDay?: T;
+  capacity?: T;
+  transmission?: T;
+  fuelType?: T;
+  images?:
+    | T
+    | {
+        image?: T;
+        alt?: T;
+        id?: T;
+      };
+  features?:
+    | T
+    | {
+        feature?: T;
+        id?: T;
+      };
+  status?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "extras_select".
+ */
+export interface ExtrasSelect<T extends boolean = true> {
+  name?: T;
+  description?: T;
+  pricePerDay?: T;
+  icon?: T;
+  status?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "orders_select".
+ */
+export interface OrdersSelect<T extends boolean = true> {
+  orderNumber?: T;
+  customer?: T;
+  car?: T;
+  startDate?: T;
+  endDate?: T;
+  extras?: T;
+  totalAmount?: T;
+  status?: T;
+  paymentMethod?: T;
+  paymentTransactionId?: T;
+  notes?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "customers_select".
+ */
+export interface CustomersSelect<T extends boolean = true> {
+  firstName?: T;
+  lastName?: T;
+  email?: T;
+  phone?: T;
+  address?:
+    | T
+    | {
+        street?: T;
+        city?: T;
+        state?: T;
+        zipCode?: T;
+        country?: T;
+      };
+  drivingLicense?:
+    | T
+    | {
+        number?: T;
+        issueDate?: T;
+        expiryDate?: T;
+      };
   updatedAt?: T;
   createdAt?: T;
 }

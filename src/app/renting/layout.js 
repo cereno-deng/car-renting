@@ -1,0 +1,14 @@
+export const metadata = {
+  title: 'Car Rental Service',
+  description: 'Book premium cars for your next trip',
+};
+
+export default function RootLayout({ children }) {
+  return (
+    <html lang="en">
+      <body>
+        {children}
+      </body>
+    </html>
+  );
+}
