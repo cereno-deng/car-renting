@@ -1,12 +1,28 @@
 import { nextHandler } from 'payload/next'
 import { getPayloadClient } from '@/lib/payload'
 
-const getPayload = async (req, res) => {
-  return await getPayloadClient()
+// Next.js API route handlers
+export async function GET(req, res) {
+  const payload = await getPayloadClient()
+  return nextHandler(req, res)
 }
 
-export const GET = nextHandler(getPayload)
-export const POST = nextHandler(getPayload)
-export const PUT = nextHandler(getPayload)
-export const PATCH = nextHandler(getPayload)
-export const DELETE = nextHandler(getPayload)
+export async function POST(req, res) {
+  const payload = await getPayloadClient()
+  return nextHandler(req, res)
+}
+
+export async function PUT(req, res) {
+  const payload = await getPayloadClient()
+  return nextHandler(req, res)
+}
+
+export async function PATCH(req, res) {
+  const payload = await getPayloadClient()
+  return nextHandler(req, res)
+}
+
+export async function DELETE(req, res) {
+  const payload = await getPayloadClient()
+  return nextHandler(req, res)
+}

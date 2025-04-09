@@ -1,16 +1,30 @@
-import { getPayload } from 'payload/dist/payload'
+// src/lib/payload.js
+import payload from 'payload'
 
-let cachedPayload = null
+// Singleton to store the initialized payload instance
+let payloadClient = null
 
 export const getPayloadClient = async () => {
-  // Initialize Payload with required settings
-  if (cachedPayload) return cachedPayload
+  if (!process.env.PAYLOAD_SECRET) {
+    process.env.PAYLOAD_SECRET = 'development-secret-key'
+  }
 
-  const payload = await getPayload({
-    secret: process.env.PAYLOAD_SECRET || 'development-secret-key',
-    local: true,
-  })
+  if (payloadClient) {
+    return payloadClient
+  }
 
-  cachedPayload = payload
+  // Initialize Payload if it hasn't been initialized yet
+  if (!payload.initialized) {
+    await payload.init({
+      secret: process.env.PAYLOAD_SECRET,
+      local: true,
+      onInit: () => {
+        console.log('Payload initialized')
+      },
+      // Add other configuration options as needed
+    })
+  }
+
+  payloadClient = payload
   return payload
 }
