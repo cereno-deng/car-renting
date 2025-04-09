@@ -1,4 +1,6 @@
-export const Extras = {
+import type { CollectionConfig } from 'payload'
+
+export const Extras: CollectionConfig = {
   slug: 'extras',
   admin: {
     useAsTitle: 'name',
