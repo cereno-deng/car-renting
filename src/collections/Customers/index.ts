@@ -75,5 +75,4 @@ export const Customers: CollectionConfig = {
       ],
     },
   ],
-  timestamps: true,
 }

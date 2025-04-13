@@ -155,25 +155,33 @@ export interface UserAuthOperations {
  */
 export interface Car {
   id: number;
-  name: string;
-  type: 'sedan' | 'suv' | 'truck' | 'luxury' | 'economy' | 'van';
-  description: string;
-  pricePerDay: number;
-  capacity: number;
-  transmission: 'automatic' | 'manual';
-  fuelType: 'gasoline' | 'diesel' | 'hybrid' | 'electric';
+  brand: 'sunlight' | 'mercedes-benz' | 'ford';
+  model: string;
+  packageName?: string | null;
+  packageDescription?: string | null;
+  normalPrice: number;
+  holidayPrice: number;
+  minRentalPeriod: number;
+  normalPriceMinRentalPeriod: number;
+  holidayPriceMinRentalPeriod: number;
+  insuranceFee: number;
+  cleaningFee: number;
+  mileage: number;
+  campingTable: boolean;
+  campingChair: boolean;
+  mattress: boolean;
+  gasStove: boolean;
+  refrigerator: boolean;
+  sink: boolean;
+  hvac: boolean;
+  bathroom: boolean;
+  gasBarrel: boolean;
+  aroundViewMonitor: boolean;
+  status: 'available' | 'maintenance' | 'reserved';
   images: {
     image: number | Media;
-    alt: string;
     id?: string | null;
   }[];
-  features?:
-    | {
-        feature: string;
-        id?: string | null;
-      }[]
-    | null;
-  status: 'available' | 'maintenance' | 'reserved';
   updatedAt: string;
   createdAt: string;
 }
@@ -276,9 +284,9 @@ export interface Media {
 export interface Extra {
   id: number;
   name: string;
-  description: string;
+  description?: string | null;
   pricePerDay: number;
-  icon?: (number | null) | Media;
+  image?: (number | null) | Media;
   status: 'active' | 'inactive';
   updatedAt: string;
   createdAt: string;
@@ -297,7 +305,7 @@ export interface Order {
   extras?: (number | Extra)[] | null;
   totalAmount: number;
   status: 'pending' | 'paid' | 'cancelled' | 'completed';
-  paymentMethod?: ('credit_card' | 'paypal' | 'bank_transfer') | null;
+  paymentMethod?: ('credit-card' | 'bank-transfer') | null;
   paymentTransactionId?: string | null;
   notes?: string | null;
   updatedAt: string;
@@ -1097,27 +1105,35 @@ export interface PayloadMigration {
  * via the `definition` "cars_select".
  */
 export interface CarsSelect<T extends boolean = true> {
-  name?: T;
-  type?: T;
-  description?: T;
-  pricePerDay?: T;
-  capacity?: T;
-  transmission?: T;
-  fuelType?: T;
+  brand?: T;
+  model?: T;
+  packageName?: T;
+  packageDescription?: T;
+  normalPrice?: T;
+  holidayPrice?: T;
+  minRentalPeriod?: T;
+  normalPriceMinRentalPeriod?: T;
+  holidayPriceMinRentalPeriod?: T;
+  insuranceFee?: T;
+  cleaningFee?: T;
+  mileage?: T;
+  campingTable?: T;
+  campingChair?: T;
+  mattress?: T;
+  gasStove?: T;
+  refrigerator?: T;
+  sink?: T;
+  hvac?: T;
+  bathroom?: T;
+  gasBarrel?: T;
+  aroundViewMonitor?: T;
+  status?: T;
   images?:
     | T
     | {
         image?: T;
-        alt?: T;
         id?: T;
       };
-  features?:
-    | T
-    | {
-        feature?: T;
-        id?: T;
-      };
-  status?: T;
   updatedAt?: T;
   createdAt?: T;
 }
@@ -1129,7 +1145,7 @@ export interface ExtrasSelect<T extends boolean = true> {
   name?: T;
   description?: T;
   pricePerDay?: T;
-  icon?: T;
+  image?: T;
   status?: T;
   updatedAt?: T;
   createdAt?: T;

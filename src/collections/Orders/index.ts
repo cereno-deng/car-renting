@@ -69,9 +69,8 @@ export const Orders: CollectionConfig = {
       name: 'paymentMethod',
       type: 'select',
       options: [
-        { label: 'Credit Card', value: 'credit_card' },
-        { label: 'PayPal', value: 'paypal' },
-        { label: 'Bank Transfer', value: 'bank_transfer' },
+        { label: 'Credit Card', value: 'credit-card' },
+        { label: 'Bank Transfer', value: 'bank-transfer' },
       ],
     },
     {

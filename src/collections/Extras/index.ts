@@ -14,12 +14,10 @@ export const Extras: CollectionConfig = {
       name: 'name',
       type: 'text',
       required: true,
-      unique: true,
     },
     {
       name: 'description',
-      type: 'textarea',
-      required: true,
+      type: 'text',
     },
     {
       name: 'pricePerDay',
@@ -28,7 +26,7 @@ export const Extras: CollectionConfig = {
       min: 0,
     },
     {
-      name: 'icon',
+      name: 'image',
       type: 'upload',
       relationTo: 'media',
     },
