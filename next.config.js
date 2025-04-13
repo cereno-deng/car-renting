@@ -22,6 +22,10 @@ const nextConfig = {
   },
   reactStrictMode: true,
   redirects,
+  webpack: (config) => {
+    config.resolve.alias['@'] = path.resolve(__dirname, 'src')
+    return config
+  },
 }
 
 export default withPayload(nextConfig)
