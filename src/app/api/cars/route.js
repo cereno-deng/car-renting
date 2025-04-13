@@ -1,11 +1,21 @@
 // src/app/api/cars/route.js
 import { NextResponse } from 'next/server'
-import { getPayloadClient } from '@/lib/payload-client'
+import payload from 'payload' // Import directly from payload
 
+// No need for a separate client file - we'll initialize payload directly in the route handler
+
+/**
+ * POST method to create a new car using Payload CMS
+ */
 export async function POST(request) {
   try {
-    // Get the initialized Payload client
-    const payload = await getPayloadClient()
+    // Initialize Payload if not already initialized
+    if (!payload.initialized) {
+      await payload.init({
+        secret: process.env.PAYLOAD_SECRET || 'your-secret-key',
+        local: true,
+      })
+    }
 
     const body = await request.json()
 
@@ -73,10 +83,18 @@ export async function POST(request) {
   }
 }
 
+/**
+ * GET method to fetch all cars from Payload CMS
+ */
 export async function GET(request) {
   try {
-    // Get the initialized Payload client
-    const payload = await getPayloadClient()
+    // Initialize Payload if not already initialized
+    if (!payload.initialized) {
+      await payload.init({
+        secret: process.env.PAYLOAD_SECRET || 'your-secret-key',
+        local: true,
+      })
+    }
 
     // Get URL parameters for filtering
     const { searchParams } = new URL(request.url)
